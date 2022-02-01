@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig.json to read more about this file */
+
+    /* Language and Environment */
+    "target": "es2016",
+
+    /* Modules */
+    "module": "commonjs",
+    "outDir": "./public",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Type Checking */
+    "strict": true,
+  }
+}
