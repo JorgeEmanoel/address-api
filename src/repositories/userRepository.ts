@@ -14,6 +14,7 @@ interface StoreProps {
   password: string
 }
 
+// TODO: add the real hash function
 function hash (str: string) {
   return str
 }

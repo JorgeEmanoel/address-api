@@ -6,8 +6,6 @@ class SequelizeDB implements IDatabaseConnection {
   instance: Sequelize
 
   constructor () {
-    console.log('Constructor called')
-
     this.instance = new Sequelize(database.name, database.username, database.password, {
       host: database.host,
       dialect: 'mysql'

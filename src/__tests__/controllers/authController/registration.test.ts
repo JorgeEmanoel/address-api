@@ -54,7 +54,7 @@ describe('Registration Test', function () {
       expect(secondAccountResponse?.status).to.be.equals(Response.HTTP_UNPROCESSABLE_ENTITY)
     })
 
-    it.only('should return the user\'s data plus its id', async function () {
+    it('should return the user\'s data plus its id', async function () {
       const res = await makeRequest(validData)
       expect(res?.status).to.be.equals(Response.HTTP_CREATED)
       expect(res?.body).to.have.property('id')
