@@ -10,7 +10,10 @@ let server: Server | null = null
 let request: SuperAgentTest | null = null
 
 function makeRequest (data: IRegistrationData = {}) {
-  return request?.post('users').send(data)
+  return request?.post('/auth/register')
+    .set('Content-type', 'application/json')
+    .set('Accept', 'application/json')
+    .send(data)
 }
 
 describe('Registration Test', function () {
@@ -51,7 +54,7 @@ describe('Registration Test', function () {
       expect(secondAccountResponse?.status).to.be.equals(Response.HTTP_UNPROCESSABLE_ENTITY)
     })
 
-    it('should return the user\'s data plus its id', async function () {
+    it.only('should return the user\'s data plus its id', async function () {
       const res = await makeRequest(validData)
       expect(res?.status).to.be.equals(Response.HTTP_CREATED)
       expect(res?.body).to.have.property('id')
