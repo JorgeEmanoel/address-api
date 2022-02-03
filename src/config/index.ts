@@ -1,15 +1,7 @@
-interface ApplicationConfig {
-  port: string
-}
+import database from './database'
+import application from './application'
 
-interface Config {
-  application: ApplicationConfig
+export {
+  application,
+  database
 }
-
-const config: Config = {
-  application: {
-    port: process.env.APP_PORT || '3000'
-  }
-}
-
-export default config
