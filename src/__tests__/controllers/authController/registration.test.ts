@@ -1,26 +1,36 @@
 import { expect } from 'chai'
-import supertest from 'supertest'
-import app from '../../../app'
+import { Server } from 'http'
+import supertest, { SuperAgentTest } from 'supertest'
+import boostrap from '../../../app'
 import invalidData, { IRegistrationData } from './dataProviders/invalidRegistrationData'
 import Response from '../../../constants/http/response'
+import sequelizeDb from '../../../databases/sequelizeDb'
 
-const server = app.listen()
-const request = supertest.agent(server)
+let server: Server | null = null
+let request: SuperAgentTest | null = null
+
+function makeRequest (data: IRegistrationData = {}) {
+  return request?.post('users').send(data)
+}
 
 describe('Registration Test', function () {
-  function makeRequest (data: IRegistrationData = {}) {
-    return request.post('users').send(data)
-  }
+  before(async function () {
+    const { app } = await boostrap([sequelizeDb])
+
+    server = app.listen()
+    request = supertest.agent(server)
+  })
 
   after(function () {
-    server.close()
+    server?.close()
+    sequelizeDb.disconnect()
   })
 
   describe('Invalid Data Validation', function () {
     invalidData.forEach(function (data) {
       it(data.description, async function () {
         const res = await makeRequest(data.body)
-        expect(res.status).to.be.equals(Response.HTTP_BAD_REQUEST)
+        expect(res?.status).to.be.equals(Response.HTTP_BAD_REQUEST)
       })
     })
   })
@@ -35,20 +45,20 @@ describe('Registration Test', function () {
 
     it('should not accept two accounts with the same email', async function () {
       const firstAccountResponse = await makeRequest(validData)
-      expect(firstAccountResponse.status).to.be.equals(Response.HTTP_CREATED)
+      expect(firstAccountResponse?.status).to.be.equals(Response.HTTP_CREATED)
 
       const secondAccountResponse = await makeRequest(validData)
-      expect(secondAccountResponse.status).to.be.equals(Response.HTTP_UNPROCESSABLE_ENTITY)
+      expect(secondAccountResponse?.status).to.be.equals(Response.HTTP_UNPROCESSABLE_ENTITY)
     })
 
     it('should return the user\'s data plus its id', async function () {
       const res = await makeRequest(validData)
-      expect(res.status).to.be.equals(Response.HTTP_CREATED)
-      expect(res.body).to.have.property('id')
-      expect(res.body).to.have.property('name')
-      expect(res.body).to.have.property('email')
-      expect(res.body).not.to.have.property('password')
-      expect(res.body).not.to.have.property('passwordConfirmation')
+      expect(res?.status).to.be.equals(Response.HTTP_CREATED)
+      expect(res?.body).to.have.property('id')
+      expect(res?.body).to.have.property('name')
+      expect(res?.body).to.have.property('email')
+      expect(res?.body).not.to.have.property('password')
+      expect(res?.body).not.to.have.property('passwordConfirmation')
     })
   })
 })
