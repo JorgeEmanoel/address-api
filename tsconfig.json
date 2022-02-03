@@ -3,7 +3,9 @@
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
     /* Language and Environment */
-    "target": "es2016",
+    "target": "ES5",
+    "baseUrl": "./",
+    "rootDir": "./src",
 
     /* Modules */
     "module": "commonjs",
@@ -13,5 +15,8 @@
 
     /* Type Checking */
     "strict": true,
-  }
+  },
+  "exclude": [
+    "src/**/*.test.ts"
+  ]
 }
