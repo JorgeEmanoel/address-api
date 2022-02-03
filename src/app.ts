@@ -3,6 +3,9 @@ import cors from 'cors'
 import IDatabaseConnection from './contracts/iDatabaseConnection'
 import DbMigrator from './migrators/dbMigrator'
 import routes from './routes'
+import dotenv from 'dotenv-safe'
+
+dotenv.config()
 
 if (process.argv.includes('--migrate')) {
   const migrator = new DbMigrator()
