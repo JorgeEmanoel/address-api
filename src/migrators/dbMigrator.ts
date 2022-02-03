@@ -1,4 +1,4 @@
-import IMigrator from 'src/contracts/iMigrator'
+import IMigrator from '../contracts/iMigrator'
 import User from '../models/user'
 
 class DbMigrator implements IMigrator {
