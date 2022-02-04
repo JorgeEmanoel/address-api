@@ -15,16 +15,16 @@ const invalidData: IInvalidData[] = [
     description: 'Missing name',
     body: {
       email: 'teste@email.com',
-      password: '123456',
-      passwordConfirmation: '123456'
+      password: '12345678',
+      passwordConfirmation: '12345678'
     }
   },
   {
     description: 'Missing e-mail',
     body: {
       name: 'John Doe',
-      password: '123456',
-      passwordConfirmation: '123456'
+      password: '12345678',
+      passwordConfirmation: '12345678'
     }
   },
   {
@@ -32,7 +32,7 @@ const invalidData: IInvalidData[] = [
     body: {
       name: 'John Doe',
       email: 'johndoe@email.com',
-      passwordConfirmation: '123456'
+      passwordConfirmation: '12345678'
     }
   },
   {
@@ -40,7 +40,7 @@ const invalidData: IInvalidData[] = [
     body: {
       name: 'John Doe',
       email: 'johndoe@email.com',
-      password: '123456'
+      password: '12345678'
     }
   },
   {
@@ -48,8 +48,8 @@ const invalidData: IInvalidData[] = [
     body: {
       name: 'John Doe',
       email: 'johndoeemail.com',
-      password: '123456',
-      passwordConfirmation: '123456'
+      password: '12345678',
+      passwordConfirmation: '12345678'
     }
   },
   {
@@ -57,8 +57,8 @@ const invalidData: IInvalidData[] = [
     body: {
       name: 'John Doe',
       email: 'johndoe@email',
-      password: '123456',
-      passwordConfirmation: '123456'
+      password: '12345678',
+      passwordConfirmation: '12345678'
     }
   }
 ]
