@@ -2,6 +2,7 @@ import * as Rules from '../constants/validator/availableRules'
 import MaxRule from './rules/max'
 import MinRule from './rules/min'
 import RequiredRule from './rules/required'
+import EmailRule from './rules/email'
 
 interface IFieldRule {
   fieldName: string
@@ -16,6 +17,8 @@ interface IValidationErrors {
   field: string
   error: string
 }
+
+type ValidRule = MinRule | MaxRule | RequiredRule | EmailRule | null
 
 class Validator {
   data: IData = {}
@@ -65,7 +68,7 @@ class Validator {
     return [...this._errors]
   }
 
-  _ruleInstanceByName (ruleName: string): MinRule | MaxRule | RequiredRule | null {
+  _ruleInstanceByName (ruleName: string): ValidRule {
     switch (ruleName) {
     case Rules.RULE_MIN:
       return new MinRule()
@@ -73,6 +76,8 @@ class Validator {
       return new MaxRule()
     case Rules.RULE_REQUIRED:
       return new RequiredRule()
+    case Rules.RULE_EMAIL:
+      return new EmailRule()
     }
 
     return null

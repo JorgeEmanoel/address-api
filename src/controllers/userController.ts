@@ -125,10 +125,14 @@ class UserController {
       },
       {
         fieldName: 'email',
-        rules: ['required', 'min:5', 'max:200']
+        rules: ['required', 'min:5', 'max:200', 'email']
       },
       {
         fieldName: 'password',
+        rules: ['required', 'min:8', 'max:200']
+      },
+      {
+        fieldName: 'passwordConfirmation',
         rules: ['required', 'min:8', 'max:200']
       }
     ]).fails()
@@ -167,7 +171,7 @@ class UserController {
       },
       {
         fieldName: 'email',
-        rules: ['min:5', 'max:200']
+        rules: ['min:5', 'max:200', 'email']
       },
       {
         fieldName: 'password',
