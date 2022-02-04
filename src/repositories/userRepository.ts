@@ -96,6 +96,38 @@ class UserRepository implements IRepository<
     }
   }
 
+  async all (attributes: FindProps): Promise<UserDTO[] | null> {
+    const where: {
+      name?: string
+      email?: string
+      id?: number
+    } = {}
+
+    if (attributes.name) {
+      where.name = attributes.name
+    }
+
+    if (attributes.email) {
+      where.email = attributes.email
+    }
+
+    if (attributes.id) {
+      where.id = attributes.id
+    }
+
+    const users = await User.findAll({
+      where
+    })
+
+    if (!users) {
+      return null
+    }
+
+    return users.map(function (user) {
+      return new UserDTO(user.name, user.email, user.id)
+    })
+  }
+
   async store (data: StoreProps) {
     const user = await User.create({
       name: data.name,
@@ -123,6 +155,18 @@ class UserRepository implements IRepository<
 
     const updatedUser = await user.update(data)
     return new UserDTO(updatedUser.name, updatedUser.email, updatedUser.id)
+  }
+
+  async delete (id: number): Promise<UserDTO | null> {
+    const user = await User.findByPk(id)
+
+    if (!user) {
+      return null
+    }
+
+    await user.destroy()
+
+    return new UserDTO(user.name, user.email, user.id)
   }
 }
 
