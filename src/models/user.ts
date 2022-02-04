@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize'
 import database from '../databases/sequelizeDb'
+import Address from './address'
 
 class User extends Model {
   declare id?: number
@@ -31,5 +32,7 @@ User.init({
   modelName: 'User',
   tableName: 'users'
 })
+
+User.hasMany(Address, { foreignKey: 'userId' })
 
 export default User
