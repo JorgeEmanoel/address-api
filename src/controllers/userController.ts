@@ -18,6 +18,14 @@ interface StoreBodyProps extends Request {
   }
 }
 
+interface UpdateBodyProps extends Request {
+  body: {
+    name?: string
+    email?: string
+    password?: string
+  }
+}
+
 interface LoginBodyProps extends Request {
   body: {
     email: string
@@ -50,8 +58,10 @@ class UserController {
     this._repo = new UserRepository(hasher)
   }
 
-  show (req: Request, res: Response): Response {
-    return res.send()
+  show (req: Request & { user?: UserDTO}, res: Response) {
+    return res.status(200).send({
+      user: req.user
+    })
   }
 
   async auth (req: LoginBodyProps, res: Response) {
@@ -142,7 +152,7 @@ class UserController {
     res.status(ResponseConstants.HTTP_CREATED).json(user)
   }
 
-  async update (req: AuthenticatedRequest, res: Response) {
+  async update (req: UpdateBodyProps, res: Response) {
     const fails = this._validator.withData(req.body).withRules([
       {
         fieldName: 'name',
@@ -165,7 +175,22 @@ class UserController {
       })
     }
 
-    const user = await this._repo.update(req.user.id, req.body)
+    const { email } = (<AuthenticatedRequest>req).user
+
+    if (req.body.email && email !== req.body.email) {
+      const accountWithTheSameEmail = await this._repo.count({ email: req.body.email })
+
+      if (accountWithTheSameEmail) {
+        return res.status(ResponseConstants.HTTP_UNPROCESSABLE_ENTITY).send({
+          message: 'E-mail already taken'
+        })
+      }
+    }
+
+    const user = await this._repo.update(
+      (<AuthenticatedRequest>req).user.id,
+      (<AuthenticatedRequest>req).body
+    )
 
     if (!user) {
       return res.status(ResponseConstants.HTTP_UNPROCESSABLE_ENTITY).send({

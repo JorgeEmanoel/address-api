@@ -67,6 +67,7 @@ class UserRepository implements IRepository<
     const where: {
       name?: string
       email?: string
+      id?: number
     } = {}
 
     if (attributes.name) {
@@ -75,6 +76,10 @@ class UserRepository implements IRepository<
 
     if (attributes.email) {
       where.email = attributes.email
+    }
+
+    if (attributes.id) {
+      where.id = attributes.id
     }
 
     const result = await User.findOne({
@@ -110,6 +115,10 @@ class UserRepository implements IRepository<
 
     if (!user) {
       return null
+    }
+
+    if (data.password) {
+      data.password = this._hasher.make(data.password)
     }
 
     const updatedUser = await user.update(data)
