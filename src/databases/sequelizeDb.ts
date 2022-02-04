@@ -8,7 +8,8 @@ class SequelizeDB implements IDatabaseConnection {
   constructor () {
     this.instance = new Sequelize(database.name, database.username, database.password, {
       host: database.host,
-      dialect: 'mysql'
+      dialect: 'mysql',
+      logging: false
     })
   }
 
