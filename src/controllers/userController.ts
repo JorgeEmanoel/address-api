@@ -3,6 +3,7 @@ import Validator from '../validators/validator'
 import ResponseConstants from '../constants/http/response'
 import RecordedUserDTO from '../dto/recordedUserDTO'
 import UserRepository, { CountProps, StoreProps, UpdateProps, FindProps, FindResult } from '../repositories/userRepository'
+import AddressRepository from '../repositories/addressRepository'
 import IRepository from '../contracts/iRepository'
 import Hasher from '../security/hasher'
 import UserDTO from '../dto/userDto'
@@ -58,9 +59,15 @@ class UserController {
     this._repo = new UserRepository(hasher)
   }
 
-  show (req: Request & { user?: UserDTO}, res: Response) {
+  async show (req: Request, res: Response) {
+    const addressRepo = new AddressRepository()
+    const addresses = await addressRepo.all({
+      userId: (<Request & { user: UserDTO}>req).user.id
+    })
+
     return res.status(200).send({
-      user: req.user
+      user: (<Request & { user: UserDTO}>req).user,
+      addresses
     })
   }
 
@@ -201,8 +208,20 @@ class UserController {
     res.status(ResponseConstants.HTTP_OK).send(user)
   }
 
-  delete (req: Request, res: Response): Response {
-    return res.send()
+  async delete (req: Request, res: Response) {
+    const user = (<AuthenticatedRequest>req).user
+    const addressRepo = new AddressRepository()
+
+    const addresses = await addressRepo.all({
+      userId: user.id
+    })
+
+    addresses?.forEach(async address => {
+      await addressRepo.delete(Number(address.id))
+    })
+
+    this._repo.delete(Number(user.id))
+    res.status(ResponseConstants.HTTP_OK).send(user)
   }
 }
 
