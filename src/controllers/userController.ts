@@ -7,6 +7,8 @@ import IRepository from '../contracts/iRepository'
 import Hasher from '../security/hasher'
 import UserDTO from '../dto/userDto'
 import IHash from '../contracts/iHash'
+import jwt from 'jsonwebtoken'
+import AuthConfig from '../config/auth'
 
 interface StoreBodyProps extends Request {
   body: {
@@ -87,8 +89,15 @@ class UserController {
       })
     }
 
-    // TODO: login user
-    res.status(ResponseConstants.HTTP_OK).send({})
+    const token = jwt.sign({
+      id: data.user.id
+    }, AuthConfig.jwt.secret, {
+      expiresIn: AuthConfig.jwt.timeout
+    })
+
+    res.status(ResponseConstants.HTTP_OK).send({
+      token
+    })
   }
 
   async store (req: StoreBodyProps, res: Response) {
