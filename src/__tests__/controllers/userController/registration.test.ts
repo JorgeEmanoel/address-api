@@ -77,9 +77,12 @@ describe('Registration Test', function () {
     })
 
     it('should not accept two accounts with the same email', async function () {
+      sandbox.stub(UserRepository.prototype, 'count').resolves(0)
+
       const firstAccountResponse = await makeRequest(validData)
       expect(firstAccountResponse?.status).to.be.equals(Response.HTTP_CREATED)
 
+      sandbox.restore()
       sandbox.stub(UserRepository.prototype, 'count').resolves(1)
 
       const secondAccountResponse = await makeRequest(validData)
@@ -87,6 +90,8 @@ describe('Registration Test', function () {
     })
 
     it('should return the user\'s data plus its id', async function () {
+      sandbox.stub(UserRepository.prototype, 'count').resolves(0)
+
       const res = await makeRequest(validData)
 
       expect(res?.status).to.be.equals(Response.HTTP_CREATED)
