@@ -12,7 +12,7 @@ interface IInvalidData {
 
 const invalidData: IInvalidData[] = [
   {
-    description: 'Missing name',
+    description: 'Should not accept when missing name',
     body: {
       email: 'teste@email.com',
       password: '12345678',
@@ -20,7 +20,7 @@ const invalidData: IInvalidData[] = [
     }
   },
   {
-    description: 'Missing e-mail',
+    description: 'Should not accept when missing e-mail',
     body: {
       name: 'John Doe',
       password: '12345678',
@@ -28,7 +28,7 @@ const invalidData: IInvalidData[] = [
     }
   },
   {
-    description: 'Missing password',
+    description: 'Should not accept when missing password',
     body: {
       name: 'John Doe',
       email: 'johndoe@email.com',
@@ -36,7 +36,7 @@ const invalidData: IInvalidData[] = [
     }
   },
   {
-    description: 'Missing password confirmation',
+    description: 'Should not accept when missing password confirmation',
     body: {
       name: 'John Doe',
       email: 'johndoe@email.com',
@@ -44,7 +44,7 @@ const invalidData: IInvalidData[] = [
     }
   },
   {
-    description: 'Invalid e-mail (missing @)',
+    description: 'Should not accept an invalid e-mail (missing @)',
     body: {
       name: 'John Doe',
       email: 'johndoeemail.com',
@@ -53,7 +53,7 @@ const invalidData: IInvalidData[] = [
     }
   },
   {
-    description: 'Invalid e-mail (missing domain)',
+    description: 'Should not accept an invalid e-mail (missing domain)',
     body: {
       name: 'John Doe',
       email: 'johndoe@email',
