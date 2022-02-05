@@ -26,7 +26,11 @@ interface FindResult {
   password: string
 }
 
-type UpdateProps = StoreProps
+interface UpdateProps {
+  name?: string
+  email?: string
+  password?: string
+}
 
 class UserRepository implements IRepository<
   UserDTO,
