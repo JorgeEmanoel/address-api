@@ -5,7 +5,6 @@ import supertest, { SuperAgentTest } from 'supertest'
 import boostrap from '../../../app'
 import invalidData, { ILoginData } from './dataProviders/invalidLoginData'
 import Response from '../../../constants/http/response'
-import sequelizeDb from '../../../databases/sequelizeDb'
 import UserRepository from '../../../repositories/userRepository'
 import UserDTO from '../../../dto/userDto'
 import Hasher from '../../../security/hasher'
@@ -31,7 +30,7 @@ function makeRequest (data: ILoginData = {}) {
 
 describe('Login Test', function () {
   before(async function () {
-    const { app } = await boostrap([sequelizeDb])
+    const { app } = await boostrap([])
 
     server = app.listen()
     request = supertest.agent(server)
@@ -39,7 +38,6 @@ describe('Login Test', function () {
 
   after(function () {
     server?.close()
-    sequelizeDb.disconnect()
   })
 
   describe('Invalid Data Validation', function () {
