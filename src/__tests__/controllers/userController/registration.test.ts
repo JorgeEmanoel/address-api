@@ -1,11 +1,10 @@
 import { expect } from 'chai'
 import { Server } from 'http'
-import sinon, { SinonSandbox, SinonStub } from 'sinon'
+import sinon, { SinonSandbox } from 'sinon'
 import supertest, { SuperAgentTest } from 'supertest'
 import boostrap from '../../../app'
 import invalidData, { IRegistrationData } from './dataProviders/invalidRegistrationData'
 import Response from '../../../constants/http/response'
-import sequelizeDb from '../../../databases/sequelizeDb'
 import UserRepository from '../../../repositories/userRepository'
 import UserDTO from '../../../dto/userDto'
 
@@ -21,7 +20,7 @@ function makeRequest (data: IRegistrationData = {}) {
 
 describe('Registration Test', function () {
   before(async function () {
-    const { app } = await boostrap([sequelizeDb])
+    const { app } = await boostrap([])
 
     server = app.listen()
     request = supertest.agent(server)
@@ -29,7 +28,6 @@ describe('Registration Test', function () {
 
   after(function () {
     server?.close()
-    sequelizeDb.disconnect()
   })
 
   describe('Invalid Data Validation', function () {
