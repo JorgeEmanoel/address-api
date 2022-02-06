@@ -44,6 +44,13 @@ class Validator {
     this._errors = []
 
     for (const field of this.fields) {
+      if (
+        !field.rules.includes(Rules.RULE_REQUIRED) &&
+        !Object.keys(this.data).includes(field.fieldName)
+      ) {
+        continue
+      }
+
       for (const rule of field.rules) {
         const [ruleName, referenceValue] = rule.split(':')
         const rulable = this._ruleInstanceByName(ruleName)

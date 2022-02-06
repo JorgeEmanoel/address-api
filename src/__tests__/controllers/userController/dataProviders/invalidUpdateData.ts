@@ -11,24 +11,21 @@ interface IInvalidData {
 
 const invalidData: IInvalidData[] = [
   {
-    description: 'Should not accept when missing name',
+    description: 'Should not accept when invalid name',
     body: {
-      email: 'teste@email.com',
-      password: '12345678'
+      name: 'ab'
     }
   },
   {
-    description: 'Should not accept when missing e-mail',
+    description: 'Should not accept when invalid password (min)',
     body: {
-      name: 'John Doe',
-      password: '12345678'
+      password: '123456'
     }
   },
   {
-    description: 'Should not accept when missing password',
+    description: 'Should not accept when invalid password (max 200)',
     body: {
-      name: 'John Doe',
-      email: 'johndoe@email.com'
+      password: '#'.repeat(201)
     }
   },
   {
