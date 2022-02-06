@@ -53,7 +53,7 @@ function makeRequest () {
     .set('Authorization', userToken)
 }
 
-describe.only('AddressController => show', function () {
+describe('AddressController => show', function () {
   let sandbox: SinonSandbox
   before(async function () {
     const { app } = await boostrap([])
@@ -95,7 +95,7 @@ describe.only('AddressController => show', function () {
     expect(res?.body).not.to.have.property('errors')
   })
 
-  it.only('Should return the given address', async function () {
+  it('Should return the given address', async function () {
     const spy = sandbox.stub(AddressRepository.prototype, 'find').resolves(addressDto)
     const res = await makeRequest()
 

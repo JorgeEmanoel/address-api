@@ -53,7 +53,7 @@ function makeRequest () {
     .set('Authorization', userToken)
 }
 
-describe.only('AddressController => delete', function () {
+describe('AddressController => delete', function () {
   let sandbox: SinonSandbox
   before(async function () {
     const { app } = await boostrap([])
