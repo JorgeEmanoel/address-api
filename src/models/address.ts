@@ -17,19 +17,19 @@ Address.init({
     primaryKey: true
   },
   neightborhood: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(200),
     allowNull: false
   },
   city: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(200),
     allowNull: false
   },
   state: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(2),
     allowNull: false
   },
   postalCode: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(8),
     allowNull: false
   }
 }, {

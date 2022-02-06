@@ -16,15 +16,16 @@ User.init({
     primaryKey: true
   },
   name: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(200),
     allowNull: false
   },
   email: {
-    type: DataTypes.STRING,
-    allowNull: false
+    type: DataTypes.STRING(200),
+    allowNull: false,
+    unique: true
   },
   password: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(254),
     allowNull: false
   }
 }, {
