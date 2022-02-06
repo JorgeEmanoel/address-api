@@ -52,7 +52,7 @@ function update (data: IUpdateData = {}) {
     .send(data)
 }
 
-describe('Show Test', function () {
+describe('UserController => show', function () {
   let showSandbox: SinonSandbox
 
   before(async function () {
@@ -95,7 +95,7 @@ describe('Show Test', function () {
   })
 })
 
-describe('Update Test', function () {
+describe('UserController => update', function () {
   before(async function () {
     const { app } = await boostrap([])
 
@@ -178,7 +178,7 @@ describe('Update Test', function () {
   })
 })
 
-describe('Delete Test', function () {
+describe('UserController => delete', function () {
   let deleteSandbox: SinonSandbox
 
   before(async function () {

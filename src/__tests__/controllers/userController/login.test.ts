@@ -28,7 +28,7 @@ function makeRequest (data: ILoginData = {}) {
     .send(data)
 }
 
-describe('Login Test', function () {
+describe('UserController => auth', function () {
   before(async function () {
     const { app } = await boostrap([])
 

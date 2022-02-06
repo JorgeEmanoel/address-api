@@ -18,7 +18,7 @@ function makeRequest (data: IRegistrationData = {}) {
     .send(data)
 }
 
-describe('Registration Test', function () {
+describe('UserController => store', function () {
   before(async function () {
     const { app } = await boostrap([])
 
