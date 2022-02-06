@@ -162,8 +162,6 @@ describe('Update Test', function () {
 
       const res = await update(data)
 
-      console.log(res?.body)
-
       expect(res?.status).to.be.equals(Response.HTTP_OK)
       expect(res?.body).to.have.property('name', data.name)
       expect(res?.body).to.have.property('email', data.email)
