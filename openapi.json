@@ -19,6 +19,14 @@
     {
       "name": "auth",
       "description": "Application auth"
+    },
+    {
+      "name": "user",
+      "description": "Authenticated user's data"
+    },
+    {
+      "name": "addresses",
+      "description": "User's addresses"
     }
   ],
   "paths": {
@@ -57,7 +65,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
                 }
               }
             }
@@ -68,25 +77,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    },
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "field": {
-                            "type": "string"
-                          },
-                          "error": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/HttpBadRequest"
                 }
               }
             }
@@ -144,25 +135,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    },
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "field": {
-                            "type": "string"
-                          },
-                          "error": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/HttpBadRequest"
                 }
               }
             }
@@ -173,25 +146,32 @@
     "/auth/data": {
       "get": {
         "tags": [
-          "auth"
+          "user"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
         ],
         "summary": "Account details",
         "responses": {
           "200": {
-            "description": "Account created",
+            "description": "Account details",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "id": {
-                      "type": "string"
+                    "user": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/User"
                     },
-                    "name": {
-                      "type": "string"
-                    },
-                    "email": {
-                      "type": "string"
+                    "addresses": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/Address"
+                      }
                     }
                   }
                 }
@@ -205,7 +185,12 @@
       },
       "put": {
         "tags": [
-          "auth"
+          "user"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
         ],
         "summary": "Update account data",
         "requestBody": {
@@ -235,17 +220,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "email": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/User"
                 }
               }
             }
@@ -256,25 +231,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    },
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "field": {
-                            "type": "string"
-                          },
-                          "error": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/HttpBadRequest"
                 }
               }
             }
@@ -286,7 +243,12 @@
       },
       "delete": {
         "tags": [
-          "auth"
+          "user"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
         ],
         "summary": "Delete account and its addresses",
         "responses": {
@@ -296,15 +258,76 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid authorization token"
+          }
+        }
+      }
+    },
+    "/addresses": {
+      "get": {
+        "tags": [
+          "addresses"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "List the user's addresses",
+        "parameters": [
+          {
+            "name": "neightborhood",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "postalCode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Addresses list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
                   "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "email": {
-                      "type": "string"
+                    "addresses": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/Address"
+                      }
                     }
                   }
                 }
@@ -312,7 +335,277 @@
             }
           },
           "401": {
+            "description": "Missin or invalid authorization token"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "addresses"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "Create a new address",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/Address"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid sent data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/HttpBadRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missin or invalid authorization token"
+          }
+        }
+      }
+    },
+    "/addresses/{id}": {
+      "get": {
+        "tags": [
+          "addresses"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Address found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Address"
+                }
+              }
+            }
+          },
+          "401": {
             "description": "Missing or invalid authorization token"
+          },
+          "404": {
+            "description": "Address not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "addresses"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/AddressData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Address updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Address"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid authorization token"
+          },
+          "404": {
+            "description": "Address not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "addresses"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Address deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Address"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid authorization token"
+          },
+          "404": {
+            "description": "Address not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "Authorization": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    },
+    "schemas": {
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "HttpBadRequest": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "id": {
+            "type": "number"
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "neightborhood": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "string"
+          },
+          "id": {
+            "type": "number"
+          }
+        }
+      },
+      "AddressData": {
+        "type": "object",
+        "properties": {
+          "neightborhood": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "string"
           }
         }
       }
