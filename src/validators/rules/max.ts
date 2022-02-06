@@ -7,8 +7,8 @@ class MaxRule implements IRulable<string | number> {
     this.value = Number.POSITIVE_INFINITY
   }
 
-  withValue (value: string | number) {
-    this.value = value
+  withValue (value?: string | number) {
+    this.value = String(value)
     return this
   }
 
