@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: address_api_db
+    hostname: address_api_db
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - ${DB_PORT}:3306
+    networks:
+      - address_network
+  api:
+    image: node:17
+    command: "bash -c 'cd /app && yarn && yarn dev'"
+    container_name: address_api
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    volumes:
+      - ./:/app
+    depends_on:
+      - mysql
+    networks:
+      - address_network
+networks:
+  address_network:
+    driver: bridge
