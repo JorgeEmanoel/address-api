@@ -9,6 +9,10 @@ interface CountProps {
 interface FindProps {
   id?: number
   userId?: number
+  neightborhood?: string
+  city?: string
+  state?: string
+  postalCode?: string
 }
 
 interface StoreProps {
@@ -85,6 +89,10 @@ class AddressRepository implements IRepository<
     const where: {
       id?: number
       userId?: number
+      neightborhood?: string
+      city?: string
+      state?: string
+      postalCode?: string
     } = {}
 
     if (attributes.id) {
@@ -93,6 +101,22 @@ class AddressRepository implements IRepository<
 
     if (attributes.userId) {
       where.userId = attributes.userId
+    }
+
+    if (attributes.city) {
+      where.city = attributes.city
+    }
+
+    if (attributes.state) {
+      where.state = attributes.state
+    }
+
+    if (attributes.postalCode) {
+      where.postalCode = attributes.postalCode
+    }
+
+    if (attributes.neightborhood) {
+      where.neightborhood = attributes.neightborhood
     }
 
     const addresses = await Address.findAll({
@@ -124,7 +148,7 @@ class AddressRepository implements IRepository<
     })
 
     if (!address) {
-      throw new Error('It was not possible to insert user in database')
+      throw new Error('It was not possible to insert address in database')
     }
 
     return new AddressDTO(

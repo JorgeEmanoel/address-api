@@ -40,6 +40,15 @@ interface ShowProps extends Request {
   },
 }
 
+interface FilteredRequest extends Request {
+  query: {
+    neightborhood?: string
+    city?: string
+    state?: string
+    postalCode?: string
+  },
+}
+
 interface AuthenticatedRequest extends Request {
   user: RecordedUserDTO
 }
@@ -61,9 +70,35 @@ class AddressController {
   }
 
   async index (req: Request, res: Response) {
-    const addresses = await this._repo.all({
-      userId: (<Request & { user: UserDTO}>req).user.id
-    })
+    const filters: {
+      userId: number
+      neightborhood?: string
+      city?: string
+      state?: string
+      postalCode?: string
+    } = {
+      userId: Number((<Request & { user: UserDTO}>req).user.id)
+    }
+
+    const { query } = <FilteredRequest>req
+
+    if (query.city) {
+      filters.city = query.city
+    }
+
+    if (query.neightborhood) {
+      filters.neightborhood = query.neightborhood
+    }
+
+    if (query.state) {
+      filters.state = query.state
+    }
+
+    if (query.postalCode) {
+      filters.postalCode = query.postalCode
+    }
+
+    const addresses = await this._repo.all(filters)
 
     return res.status(200).send({
       addresses
