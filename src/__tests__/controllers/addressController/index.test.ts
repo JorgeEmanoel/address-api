@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Server } from 'http'
-import sinon, { SinonSandbox } from 'sinon'
+import sinon, { SinonSandbox, SinonSpy } from 'sinon'
 import supertest, { SuperAgentTest } from 'supertest'
 import jwt from 'jsonwebtoken'
 import boostrap from '../../../app'
@@ -111,5 +111,44 @@ describe('AddressController => index', function () {
     expect(res?.body.addresses[1]).to.have.property('id', addressDto.id)
 
     spy.restore()
+  })
+
+  describe('Should accept query params', async function () {
+    let spy: SinonSpy
+    let queryParamsSandbox: SinonSandbox
+
+    before(function () {
+      queryParamsSandbox = sinon.createSandbox()
+      spy = queryParamsSandbox.stub(AddressRepository.prototype, 'all').resolves([addressDto])
+    })
+
+    after(function () {
+      queryParamsSandbox.restore()
+    })
+
+    const queries = [
+      {
+        neightborhood: 'Some neightborhood'
+      },
+      {
+        city: 'Some city'
+      },
+      {
+        state: 'Some state'
+      },
+      {
+        postalCode: 'Some postalCode'
+      }
+    ]
+
+    queries.forEach(function (query) {
+      it(`Should filter by ${Object.keys(query).toString()}`, async function () {
+        await makeRequest()?.query(query)
+        expect(spy.withArgs({
+          userId: userData.id,
+          ...query
+        }).calledOnce).to.be.equals(true)
+      })
+    })
   })
 })
