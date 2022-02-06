@@ -30,6 +30,13 @@ const userToken = jwt.sign({
 
 const hasher = new Hasher()
 
+function deleteData () {
+  return request?.delete('/auth/data')
+    .set('Content-type', 'application/json')
+    .set('Accept', 'application/json')
+    .set('Authorization', userToken)
+}
+
 function getData () {
   return request?.get('/auth/data')
     .set('Content-type', 'application/json')
@@ -168,5 +175,53 @@ describe('Update Test', function () {
       expect(res?.body).to.have.property('id', validData.id)
       expect(spy.withArgs(validData.id, data).calledOnce).to.be.equals(true)
     })
+  })
+})
+
+describe('Delete Test', function () {
+  let deleteSandbox: SinonSandbox
+
+  before(async function () {
+    const { app } = await boostrap([])
+
+    server = app.listen()
+    request = supertest.agent(server)
+  })
+
+  after(function () {
+    server?.close()
+  })
+
+  beforeEach(() => {
+    deleteSandbox = sinon.createSandbox()
+    deleteSandbox.stub(UserRepository.prototype, 'find').resolves({
+      user: new UserDTO(
+        validData.name,
+        validData.email,
+        validData.id
+      ),
+      password: hasher.make(validData.password)
+    })
+    deleteSandbox.stub(AddressRepository.prototype, 'all').resolves([])
+  })
+
+  afterEach(function () {
+    deleteSandbox.restore()
+  })
+
+  it('Should return the user\'s data after its deletion', async function () {
+    const spy = deleteSandbox.stub(UserRepository.prototype, 'delete').resolves(new UserDTO(
+      validData.name,
+      validData.email,
+      validData.id
+    ))
+
+    const res = await deleteData()
+
+    expect(spy.withArgs(validData.id).calledOnce).to.be.equals(true)
+    expect(res?.status).to.be.equals(Response.HTTP_OK)
+    expect(res?.body).have.property('name', validData.name)
+    expect(res?.body).have.property('email', validData.email)
+    expect(res?.body).have.property('id', validData.id)
   })
 })
