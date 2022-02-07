@@ -22,6 +22,7 @@ class SequelizeDB implements IDatabaseConnection {
       await this.instance?.authenticate()
       return true
     } catch (err) {
+      console.log({ err })
       return false
     }
   }

@@ -9,7 +9,7 @@ import Hasher from '../security/hasher'
 import UserDTO from '../dto/userDto'
 import IHash from '../contracts/iHash'
 import jwt from 'jsonwebtoken'
-import AuthConfig from '../config/auth'
+import { auth as AuthConfig } from '../config'
 
 interface StoreBodyProps extends Request {
   body: {

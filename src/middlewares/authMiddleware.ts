@@ -4,7 +4,7 @@ import Hasher from '../security/hasher'
 import UserRepository from '../repositories/userRepository'
 import ResponseConstants from '../constants/http/response'
 import jwt from 'jsonwebtoken'
-import AuthConfig from '../config/auth'
+import { auth as AuthConfig } from '../config'
 
 const userRepository = new UserRepository(new Hasher())
 
