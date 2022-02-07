@@ -2,6 +2,8 @@
 
 Este projeto consiste em uma API para gerenciamento de endereços por usuário.
 
+Autor: [Jorge emanoel](https://jorgeemanoel.com)
+
 ### Tecnologias
 
 - [nodejs](https://nodejs.org/en/)
@@ -51,4 +53,12 @@ DB_NAME=address_db
 
 ```bash
 docker-compose down && docker-compose up -d
+```
+
+### Testes
+
+Após configurar corretamente a aplicação, os testes podem ser executados através do seguinte comando:
+
+```bash
+docker exec address_api bash -c 'cd /app && yarn test'
 ```
