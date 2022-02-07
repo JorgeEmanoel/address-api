@@ -66,7 +66,7 @@ describe('Components => vaidators/Validator', function () {
       const MIN = 10
 
       const isValidSpy = sandbox.stub(MinRule.prototype, 'isValid').returns(false)
-      const withValueSpy = sandbox.spy(MinRule.prototype, 'withValue')
+      const withReferenceSpy = sandbox.spy(MinRule.prototype, 'withReference')
 
       const validator = new Validator(data, [
         {
@@ -79,7 +79,7 @@ describe('Components => vaidators/Validator', function () {
       const errors = validator.errors()
 
       expect(isValidSpy.withArgs(data.value).calledOnce).to.be.equals(true)
-      expect(withValueSpy.withArgs(String(MIN)).calledOnce).to.be.equals(true)
+      expect(withReferenceSpy.withArgs(String(MIN)).calledOnce).to.be.equals(true)
       expect(fails).to.be.equals(true)
       expect(errors.length).to.be.equals(1)
       expect(errors[0]).to.have.property('field', 'value')
@@ -91,7 +91,7 @@ describe('Components => vaidators/Validator', function () {
       const MAX = 10
 
       const isValidSpy = sandbox.stub(MaxRule.prototype, 'isValid').returns(false)
-      const withValueSpy = sandbox.spy(MaxRule.prototype, 'withValue')
+      const withReferenceSpy = sandbox.spy(MaxRule.prototype, 'withReference')
 
       const validator = new Validator(data, [
         {
@@ -104,7 +104,7 @@ describe('Components => vaidators/Validator', function () {
       const errors = validator.errors()
 
       expect(isValidSpy.withArgs(data.value).calledOnce).to.be.equals(true)
-      expect(withValueSpy.withArgs(String(MAX)).calledOnce).to.be.equals(true)
+      expect(withReferenceSpy.withArgs(String(MAX)).calledOnce).to.be.equals(true)
       expect(fails).to.be.equals(true)
       expect(errors.length).to.be.equals(1)
       expect(errors[0]).to.have.property('field', 'value')
@@ -127,11 +127,11 @@ describe('Components => vaidators/Validator', function () {
     }: MakeSpiesProps = {}) => ({
       minRule: {
         isValid: sandbox.stub(MinRule.prototype, 'isValid').returns(minRuleIsValid),
-        withValue: sandbox.spy(MinRule.prototype, 'withValue')
+        withReference: sandbox.spy(MinRule.prototype, 'withReference')
       },
       maxRule: {
         isValid: sandbox.stub(MaxRule.prototype, 'isValid').returns(maxRuleIsValid),
-        withValue: sandbox.spy(MaxRule.prototype, 'withValue')
+        withReference: sandbox.spy(MaxRule.prototype, 'withReference')
       },
       required: {
         isValid: sandbox.stub(RequiredRule.prototype, 'isValid').returns(requiredIsValid)
@@ -162,10 +162,10 @@ describe('Components => vaidators/Validator', function () {
 
       errors.should.have.property('length', 4)
       spies.maxRule.isValid.withArgs(data.value).should.have.property('calledOnce', true)
-      spies.maxRule.withValue.withArgs(String(MAX)).should.have.property('calledOnce', true)
+      spies.maxRule.withReference.withArgs(String(MAX)).should.have.property('calledOnce', true)
 
       spies.minRule.isValid.withArgs(data.value).should.have.property('calledOnce', true)
-      spies.minRule.withValue.withArgs(String(MIN)).should.have.property('calledOnce', true)
+      spies.minRule.withReference.withArgs(String(MIN)).should.have.property('calledOnce', true)
 
       spies.required.isValid.withArgs(data.value).should.have.property('calledOnce', true)
       spies.email.isValid.withArgs(data.value).should.have.property('calledOnce', true)

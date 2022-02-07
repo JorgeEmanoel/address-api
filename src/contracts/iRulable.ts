@@ -1,6 +1,6 @@
 interface IRulable<T> {
   value: T
-  withValue: (param?: T) => IRulable<T>
+  withReference: (param?: T) => IRulable<T>
   isValid: (data: T) => boolean
   message: (fieldName: string) => string
 }

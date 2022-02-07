@@ -3,7 +3,7 @@ import IRulable from '../../contracts/iRulable'
 class RequiredRule implements IRulable<unknown> {
   value: unknown = null
 
-  withValue (value?: unknown) {
+  withReference (value?: unknown) {
     this.value = value
     return this
   }

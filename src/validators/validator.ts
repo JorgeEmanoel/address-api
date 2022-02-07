@@ -59,7 +59,7 @@ class Validator {
           throw new Error(`Invalid rule name: ${ruleName}`)
         }
 
-        if (!rulable.withValue(referenceValue).isValid(this.data[field.fieldName])) {
+        if (!rulable.withReference(referenceValue).isValid(this.data[field.fieldName])) {
           this._errors.push({
             field: field.fieldName,
             error: rulable.message(field.fieldName)

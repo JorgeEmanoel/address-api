@@ -3,7 +3,7 @@ import IRulable from '../../contracts/iRulable'
 class EmailRule implements IRulable<unknown> {
   value: unknown = undefined
 
-  withValue (value?: unknown) {
+  withReference (value?: unknown) {
     this.value = value
     return this
   }
