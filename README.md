@@ -55,6 +55,12 @@ DB_NAME=address_db
 docker-compose down && docker-compose up -d
 ```
 
+6. Migre o banco:
+
+```bash
+docker exec address_api bash -c 'cd /app && yarn migrate'
+```
+
 ### Testes
 
 Após configurar corretamente a aplicação, os testes podem ser executados através do seguinte comando:
